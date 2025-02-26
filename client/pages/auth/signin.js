@@ -4,12 +4,12 @@ import Link from 'next/link';
 
 import useRequest from '../../hooks/useRequest';
 
-const SignUp = () => {
+const SignIn = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { call, errors } = useRequest({
-    url: '/api/users/signup',
+    url: '/api/users/signin',
     method: 'post',
     body: { email, password },
     onSuccess: () => Router.push('/'),
@@ -22,7 +22,7 @@ const SignUp = () => {
 
   return (
     <form className='container my-5' onSubmit={submit}>
-      <h1>Sign Up</h1>
+      <h1>Sign In</h1>
       <div className="form-group mt-3">
         <label>Email Address</label>
         <input type="text" className="form-control" value={email} onChange={e => setEmail(e.target.value)} />
@@ -32,10 +32,10 @@ const SignUp = () => {
         <input type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} />
       </div>
       {errors}
-      <button className="btn btn-primary mt-3">Sign Up</button>
-      <p className="mt-3">Already have an account, <Link href="/auth/signin">sign in here</Link></p>
+      <button className="btn btn-primary mt-3">Sign In</button>
+      <p className="mt-3">Don't have an account, <Link href="/auth/signup">sign up here</Link></p>
     </form>
   );
 }
 
-export default SignUp;
+export default SignIn;

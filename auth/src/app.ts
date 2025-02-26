@@ -1,11 +1,10 @@
+import { errorHandler, NotFoundError } from '@ticketing-microsservices/common';
 import cookieSession from 'cookie-session';
 import { json } from 'body-parser';
 import express from 'express';
 import 'express-async-errors';
 
-import { errorHandler } from './middlewares/error-handler';
 import { currentUserRouter } from './routes/current-user';
-import { NotFoundError } from './errors/not-found-error';
 import { signOutRouter } from './routes/signout';
 import { signInRouter } from './routes/signin';
 import { signUpRouter } from './routes/signup';

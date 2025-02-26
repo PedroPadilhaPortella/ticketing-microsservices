@@ -1,7 +1,6 @@
 import { scrypt, randomBytes } from 'crypto';
 import { promisify } from 'util';
 
-
 const scriptAsync = promisify(scrypt);
 
 export class PasswordService {

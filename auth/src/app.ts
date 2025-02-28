@@ -4,10 +4,7 @@ import { json } from 'body-parser';
 import express from 'express';
 import 'express-async-errors';
 
-import { currentUserRouter } from './routes/current-user.router';
-import { signOutRouter } from './routes/signout.router';
-import { signInRouter } from './routes/signin.router';
-import { signUpRouter } from './routes/signup.router';
+import { currentUserRouter, signOutRouter, signInRouter, signUpRouter } from './routes';
 
 const port = 3000;
 const app = express();

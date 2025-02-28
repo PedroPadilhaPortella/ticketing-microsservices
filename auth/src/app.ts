@@ -4,15 +4,15 @@ import { json } from 'body-parser';
 import express from 'express';
 import 'express-async-errors';
 
-import { currentUserRouter } from './routes/current-user';
-import { signOutRouter } from './routes/signout';
-import { signInRouter } from './routes/signin';
-import { signUpRouter } from './routes/signup';
+import { currentUserRouter } from './routes/current-user.router';
+import { signOutRouter } from './routes/signout.router';
+import { signInRouter } from './routes/signin.router';
+import { signUpRouter } from './routes/signup.router';
 
 const port = 3000;
 const app = express();
 
-app.set('trust proxy', true)
+app.set('trust proxy', true);
 
 app.use(json());
 app.use(cookieSession({

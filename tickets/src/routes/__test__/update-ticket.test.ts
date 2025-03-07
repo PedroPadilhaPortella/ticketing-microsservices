@@ -1,8 +1,8 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
 
+import { natsWrapper } from '../../nats.wrapper';
 import { app } from '../../app';
-import { Ticket } from '../../models/ticket';
 
 describe('UpdateTicket Route', () => {
 
@@ -93,5 +93,22 @@ describe('UpdateTicket Route', () => {
 
     expect(ticketResponse.body.title).toEqual('title2');
     expect(ticketResponse.body.price).toEqual(20);
+  });
+
+  it('should publish a ticket on success', async () => {
+    const cookie = global.signIn();
+
+    const response = await request(app)
+      .post(`/api/tickets`)
+      .set('Cookie', cookie)
+      .send({ title: 'title1', price: 10 });
+
+    await request(app)
+      .put(`/api/tickets/${response.body.id}`)
+      .set('Cookie', cookie)
+      .send({ title: 'title2', price: 20 })
+      .expect(200);
+
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
   });
 });

@@ -1,6 +1,7 @@
 import request from 'supertest';
 
 import { Ticket } from '../../models/ticket';
+import { natsWrapper } from '../../nats.wrapper';
 import { app } from '../../app';
 
 describe('CreateTicket Route', () => {
@@ -61,5 +62,15 @@ describe('CreateTicket Route', () => {
     expect(tickets.length).toEqual(1);
     expect(tickets[0].price).toEqual(10);
     expect(tickets[0].title).toEqual('title');
+  });
+
+  it('should publish a ticket on success', async () => {
+    await request(app)
+      .post('/api/tickets')
+      .set('Cookie', global.signIn())
+      .send({ title: 'title', price: 10 })
+      .expect(201);
+
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
   });
 });

@@ -11,6 +11,7 @@
 > kubectl apply -f client-deployment.yaml
 > kubectl apply -f tickets-deployment.yaml
 > kubectl apply -f tickets-mongodb-deployment.yaml
+> kubectl apply -f nats-deployment.yaml
 
 > kubectl apply -f ingress-service.yaml
 
@@ -19,8 +20,11 @@
 > kubectl rollout restart deployment client-deployment
 > kubectl rollout restart deployment tickets-deployment
 > kubectl rollout restart deployment tickets-mongodb-deployment
+> kubectl rollout restart deployment nats-deployment
 
 > kubectl create secret generic jwt-secret --from-literal=JWT_KEY=ticketing
+
+> kubectl port-forward <pod-name> 4222:4222
 
 > kubectl get pods
 > kubectl get deployments

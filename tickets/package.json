@@ -17,7 +17,7 @@
     ]
   },
   "dependencies": {
-    "@ticketing-microsservices/common": "^1.0.15",
+    "@ticketing-microsservices/common": "^1.0.16",
     "cookie-session": "^2.1.0",
     "express": "^4.21.2",
     "express-async-errors": "^3.1.1",

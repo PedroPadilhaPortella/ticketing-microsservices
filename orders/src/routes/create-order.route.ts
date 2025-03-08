@@ -3,6 +3,8 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import mongoose from 'mongoose';
 
+import { OrderCreatedPublisher } from '../events';
+import { natsWrapper } from '../nats.wrapper';
 import { Order, Ticket } from '../models';
 
 const EXPIRATION_WINDOW_SECONDS = 15 * 60;
@@ -33,15 +35,14 @@ router.post('/api/orders', requireAuth, [
   });
   await order.save();
 
-  //TODO: Publish the event
-
-  // const publisher = new TicketCreatedPublisher(natsWrapper.client)
-  // await publisher.publish({
-  //   id: ticket.id,
-  //   title: ticket.title,
-  //   price: ticket.price,
-  //   userId: ticket.userId
-  // });
+  const publisher = new OrderCreatedPublisher(natsWrapper.client);
+  await publisher.publish({
+    id: order.id,
+    userId: order.userId,
+    status: order.status,
+    expiresAt: order.expiresAt.toISOString(),
+    ticket: { id: ticket.id, price: ticket.price }
+  });
 
   res.status(201).send(order);
 });

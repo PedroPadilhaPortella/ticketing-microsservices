@@ -1,12 +1,14 @@
 import { NotFoundError, requireAuth, UnauthorizedError } from '@ticketing-microsservices/common';
 import express, { Request, Response } from 'express';
 
+import { OrderCancelledPublisher } from '../events';
 import { Order, OrderStatus } from '../models';
+import { natsWrapper } from '../nats.wrapper';
 
 const router = express.Router();
 
 router.delete('/api/orders/:id', requireAuth, async (req: Request, res: Response) => {
-  const order = await Order.findById(req.params.id);
+  const order = await Order.findById(req.params.id).populate('ticket');
 
   if (!order) throw new NotFoundError();
   if (order.userId !== req.currentUser!.id) throw new UnauthorizedError();
@@ -14,7 +16,8 @@ router.delete('/api/orders/:id', requireAuth, async (req: Request, res: Response
   order.status = OrderStatus.Cancelled;
   await order.save();
 
-  //TODO: Publish the event
+  const publisher = new OrderCancelledPublisher(natsWrapper.client);
+  await publisher.publish({ id: order.id, ticket: { id: order.ticket.id } });
 
   res.status(204).send(order);
 });

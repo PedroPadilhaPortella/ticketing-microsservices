@@ -77,12 +77,14 @@ describe('CreateOrder Route', () => {
       .expect(201);
   });
 
-  //TODO: publish event
-  xit('should publish a reserve of a ticket on success', async () => {
+  it('should publish an order on success', async () => {
+    const ticket = Ticket.build({ title: 'concert', price: 10 });
+    await ticket.save();
+
     await request(app)
-      .post('/api/tickets')
+      .post('/api/orders')
       .set('Cookie', global.signIn())
-      .send({ title: 'title', price: 10 })
+      .send({ ticketId: ticket.id })
       .expect(201);
 
     expect(natsWrapper.client.publish).toHaveBeenCalled();

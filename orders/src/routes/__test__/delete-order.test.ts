@@ -1,9 +1,9 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
 
+import { Ticket, Order, OrderStatus } from '../../models';
 import { natsWrapper } from '../../nats.wrapper';
 import { app } from '../../app';
-import { Ticket, Order, OrderStatus } from '../../models';
 
 describe('DeleteOrder Route', () => {
   it('should returns 404 on notFound order', async () => {
@@ -33,7 +33,7 @@ describe('DeleteOrder Route', () => {
       .expect(401);
   });
 
-  xit('should returns a order when found', async () => {
+  it('should returns 204 on cancel an order with success', async () => {
     const currentUser = global.signIn();
     const ticket = Ticket.build({ title: 'ticket 1', price: 10 });
     await ticket.save();
@@ -54,6 +54,23 @@ describe('DeleteOrder Route', () => {
     expect(cancelledOrder!.status).toEqual(OrderStatus.Cancelled);
   });
 
-  //TODO: publish event
-  it.todo('should publish a reserve of a ticket on success');
+  it('should publish a reserve of a ticket on success', async () => {
+    const currentUser = global.signIn();
+    const ticket = Ticket.build({ title: 'ticket 1', price: 10 });
+    await ticket.save();
+
+    const { body: order } = await request(app)
+      .post('/api/orders')
+      .set('Cookie', currentUser)
+      .send({ ticketId: ticket.id })
+      .expect(201);
+
+    await request(app)
+      .delete(`/api/orders/${order.id}`)
+      .set('Cookie', currentUser)
+      .send()
+      .expect(204);
+
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
+  });
 });

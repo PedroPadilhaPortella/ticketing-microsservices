@@ -13,7 +13,7 @@ describe('CreateTicket Route', () => {
       .expect(401);
   });
 
-  it('should returns a status different from 401 on post a ticket signed in', async () => {
+  it('should returns a status different from 401 on post a ticket while signed in', async () => {
     const response = await request(app)
       .post('/api/tickets')
       .set('Cookie', global.signIn())

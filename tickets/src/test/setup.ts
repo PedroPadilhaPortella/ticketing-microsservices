@@ -11,8 +11,6 @@ jest.mock('../nats.wrapper');
 let mongo: any;
 
 beforeAll(async () => {
-  jest.clearAllMocks();
-
   process.env.JWT_KEY = 'jwt-test-key';
 
   mongo = await MongoMemoryServer.create();
@@ -22,6 +20,8 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+  jest.clearAllMocks();
+
   if (mongoose.connection.db) {
     const collections = await mongoose.connection.db.collections();
 

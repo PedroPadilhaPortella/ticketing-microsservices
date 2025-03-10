@@ -17,7 +17,11 @@ describe('DeleteOrder Route', () => {
   });
 
   it('should returns 401 when the currentUser is different from the orderUser', async () => {
-    const ticket = Ticket.build({ title: 'ticket 1', price: 10 });
+    const ticket = Ticket.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
+      title: 'ticket 1',
+      price: 10
+    });
     await ticket.save();
 
     const { body: order } = await request(app)
@@ -35,7 +39,11 @@ describe('DeleteOrder Route', () => {
 
   it('should returns 204 on cancel an order with success', async () => {
     const currentUser = global.signIn();
-    const ticket = Ticket.build({ title: 'ticket 1', price: 10 });
+    const ticket = Ticket.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
+      title: 'ticket 1',
+      price: 10
+    });
     await ticket.save();
 
     const { body: order } = await request(app)
@@ -56,7 +64,11 @@ describe('DeleteOrder Route', () => {
 
   it('should publish a reserve of a ticket on success', async () => {
     const currentUser = global.signIn();
-    const ticket = Ticket.build({ title: 'ticket 1', price: 10 });
+    const ticket = Ticket.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
+      title: 'ticket 1',
+      price: 10
+    });
     await ticket.save();
 
     const { body: order } = await request(app)

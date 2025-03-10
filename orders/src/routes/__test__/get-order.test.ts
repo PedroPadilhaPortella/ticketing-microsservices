@@ -17,7 +17,11 @@ describe('GetOrder Route', () => {
   });
 
   it('should returns 401 when the currentUser is different from the orderUser', async () => {
-    const ticket = Ticket.build({ title: 'ticket 1', price: 10 });
+    const ticket = Ticket.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
+      title: 'ticket 1',
+      price: 10
+    });
     await ticket.save();
 
     const { body: order } = await request(app)
@@ -35,7 +39,11 @@ describe('GetOrder Route', () => {
 
   it('should returns a order when found', async () => {
     const currentUser = global.signIn();
-    const ticket = Ticket.build({ title: 'ticket 1', price: 10 });
+    const ticket = Ticket.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
+      title: 'ticket 1',
+      price: 10
+    });
     await ticket.save();
 
     const { body: order } = await request(app)

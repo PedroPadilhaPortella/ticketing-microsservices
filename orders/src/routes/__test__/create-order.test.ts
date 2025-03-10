@@ -48,7 +48,11 @@ describe('CreateOrder Route', () => {
   });
 
   it('should returns 400 when posts an order with a already reserved ticket', async () => {
-    const ticket = Ticket.build({ title: 'title', price: 10 });
+    const ticket = Ticket.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
+      title: 'title',
+      price: 10,
+    });
     await ticket.save();
 
     const order = Order.build({
@@ -67,7 +71,11 @@ describe('CreateOrder Route', () => {
   });
 
   it('should returns 201 on reserve a ticket with success', async () => {
-    const ticket = Ticket.build({ title: 'concert', price: 10 });
+    const ticket = Ticket.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
+      title: 'concert',
+      price: 10
+    });
     await ticket.save();
 
     await request(app)
@@ -78,7 +86,11 @@ describe('CreateOrder Route', () => {
   });
 
   it('should publish an order on success', async () => {
-    const ticket = Ticket.build({ title: 'concert', price: 10 });
+    const ticket = Ticket.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
+      title: 'concert',
+      price: 10
+    });
     await ticket.save();
 
     await request(app)

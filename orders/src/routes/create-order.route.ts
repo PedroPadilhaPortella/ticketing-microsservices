@@ -35,8 +35,7 @@ router.post('/api/orders', requireAuth, [
   });
   await order.save();
 
-  const publisher = new OrderCreatedPublisher(natsWrapper.client);
-  await publisher.publish({
+  await new OrderCreatedPublisher(natsWrapper.client).publish({
     id: order.id,
     userId: order.userId,
     status: order.status,

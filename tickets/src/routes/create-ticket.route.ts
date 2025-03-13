@@ -17,8 +17,7 @@ router.post('/api/tickets', requireAuth, [
   const ticket = Ticket.build({ title, price, userId: req.currentUser!.id });
   await ticket.save();
 
-  const publisher = new TicketCreatedPublisher(natsWrapper.client)
-  await publisher.publish({
+  await new TicketCreatedPublisher(natsWrapper.client).publish({
     id: ticket.id,
     title: ticket.title,
     price: ticket.price,

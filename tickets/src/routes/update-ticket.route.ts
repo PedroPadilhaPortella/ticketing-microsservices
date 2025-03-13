@@ -1,4 +1,4 @@
-import { NotFoundError, UnauthorizedError, requireAuth, validateRequest } from '@ticketing-microsservices/common';
+import { BadRequestError, NotFoundError, UnauthorizedError, requireAuth, validateRequest } from '@ticketing-microsservices/common';
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 
@@ -19,6 +19,8 @@ router.put('/api/tickets/:id', requireAuth, [
   if (!ticket) throw new NotFoundError();
 
   if (ticket.userId !== req.currentUser!.id) throw new UnauthorizedError();
+
+  if (ticket.orderId) throw new BadRequestError('Cannot edit a reserved ticket');
 
   ticket.set({ title, price });
   await ticket.save();

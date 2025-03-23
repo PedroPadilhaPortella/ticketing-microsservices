@@ -10,6 +10,5 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
+    - uses: actions/checkout@v2
       run: cd auth && npm install && npm run test:ci

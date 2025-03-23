@@ -4,6 +4,8 @@ const Header = ({ currentUser }) => {
   const links = [
     !currentUser && { label: 'Sign Up', ref: '/auth/signup' },
     !currentUser && { label: 'Sign In', ref: '/auth/signin' },
+    currentUser && { label: 'Sell Tickets', ref: '/tickets/create' },
+    currentUser && { label: 'My Orders', ref: '/orders' },
     currentUser && { label: 'Sign Out', ref: '/auth/signout' },
   ]
     .filter(link => link)

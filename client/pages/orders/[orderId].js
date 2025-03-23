@@ -25,7 +25,7 @@ const Order = ({ order, currentUser }) => {
     url: '/api/payments',
     method: 'post',
     body: { orderId: order.id },
-    onSuccess: (payment) => Router.push(`/`),
+    onSuccess: (payment) => Router.push(`/orders`),
   });
 
   return (

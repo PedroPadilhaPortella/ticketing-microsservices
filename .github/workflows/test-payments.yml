@@ -3,8 +3,12 @@ name: test-payments
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'payments/**'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'payments/**'
 
 jobs:
   build:

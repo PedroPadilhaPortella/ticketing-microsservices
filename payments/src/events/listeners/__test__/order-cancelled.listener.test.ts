@@ -14,7 +14,7 @@ const setup = async () => {
     userId: new mongoose.Types.ObjectId().toHexString(),
     status: OrderStatus.Created,
     version: 0,
-    price: 10,
+    price: 100,
   });
   await order.save();
 
